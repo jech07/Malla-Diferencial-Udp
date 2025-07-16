@@ -1,94 +1,72 @@
-/* Estilos generales */
-body {
-    font-family: 'Poppins', sans-serif;
-    background-color: #fdf6f9;
-    color: #333;
-    margin: 0;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
+document.addEventListener('DOMContentLoaded', () => {
+    const malla = document.getElementById('malla-curricular');
+    const ramos = document.querySelectorAll('.ramo');
+    const KEY_PROGRESO = 'progresoMalla';
 
-header {
-    text-align: center;
-    margin-bottom: 30px;
-}
+    // Función para cargar el progreso guardado
+    function cargarProgreso() {
+        const progresoGuardado = localStorage.getItem(KEY_PROGRESO);
+        if (progresoGuardado) {
+            const ramosAprobados = JSON.parse(progresoGuardado);
+            ramosAprobados.forEach(idRamo => {
+                const ramo = document.getElementById(idRamo);
+                if (ramo) {
+                    ramo.classList.add('aprobado');
+                }
+            });
+        }
+    }
 
-h1 {
-    color: #d63384;
-}
+    // Función para guardar el progreso actual
+    function guardarProgreso() {
+        const ramosAprobados = [];
+        document.querySelectorAll('.ramo.aprobado').forEach(ramo => {
+            ramosAprobados.push(ramo.id);
+        });
+        localStorage.setItem(KEY_PROGRESO, JSON.stringify(ramosAprobados));
+    }
+    
+    // Función para actualizar el estado de los ramos (bloqueado/desbloqueado)
+    function actualizarEstadoRamos() {
+        ramos.forEach(ramo => {
+            const prerrequisitosAttr = ramo.dataset.prerrequisitos;
+            if (!prerrequisitosAttr) {
+                // Si no tiene prerrequisitos, nunca está bloqueado
+                ramo.classList.remove('bloqueado');
+                return;
+            }
 
-/* Contenedor principal de la malla */
-.malla-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-    gap: 15px;
-    width: 100%;
-    max-width: 1400px;
-}
+            const prerrequisitos = JSON.parse(prerrequisitosAttr);
+            let todosAprobados = true;
 
-/* Columna de cada semestre */
-.semestre {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
+            prerrequisitos.forEach(idPrerrequisito => {
+                const prerrequisito = document.getElementById(idPrerrequisito);
+                if (prerrequisito && !prerrequisito.classList.contains('aprobado')) {
+                    todosAprobados = false;
+                }
+            });
 
-.semestre h2 {
-    font-size: 1.1em;
-    text-align: center;
-    color: #333;
-    border-bottom: 2px solid #f2a6c8;
-    padding-bottom: 8px;
-    margin-bottom: 5px;
-}
+            if (todosAprobados) {
+                ramo.classList.remove('bloqueado');
+            } else {
+                // Solo se bloquea si no está ya aprobado
+                if (!ramo.classList.contains('aprobado')) {
+                    ramo.classList.add('bloqueado');
+                }
+            }
+        });
+    }
 
-/* Estilos de los ramos */
-.ramo {
-    padding: 15px;
-    border-radius: 8px;
-    font-size: 0.9em;
-    text-align: center;
-    min-height: 80px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.3s ease;
-    cursor: pointer;
-    border: 1px solid rgba(0, 0, 0, 0.05);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-}
+    // Event listener para manejar los clics en los ramos
+    malla.addEventListener('click', (e) => {
+        if (e.target.classList.contains('ramo') && !e.target.classList.contains('bloqueado')) {
+            e.target.classList.toggle('aprobado');
+            actualizarEstadoRamos();
+            guardarProgreso();
+        }
+    });
 
-/* Estado por defecto (No aprobado) -> Rosado */
-.ramo {
-    background-color: #fce4ec; /* Rosado pastel */
-    color: #880e4f;
-}
-
-.ramo:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-/* Estado Aprobado -> Morado y tachado */
-.ramo.aprobado {
-    background-color: #ab47bc; /* Morado */
-    color: white;
-    text-decoration: line-through;
-    text-decoration-thickness: 2px;
-    font-weight: 600;
-}
-
-/* Estado Bloqueado -> Gris */
-.ramo.bloqueado {
-    background-color: #e0e0e0; /* Gris */
-    color: #757575;
-    cursor: not-allowed;
-    pointer-events: none; /* Deshabilita clics */
-}
-
-.ramo.bloqueado:hover {
-    transform: none;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-}
+    // Carga inicial y actualización al cargar la página
+    cargarProgreso();
+    actualizarEstadoRamos();
+});
