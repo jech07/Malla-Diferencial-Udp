@@ -1,1 +1,65 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Malla Interactiva</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
 
+    <header>
+        <h1>Malla Curricular Interactiva</h1>
+        <p>Haz clic en un ramo para marcarlo como aprobado. Tu progreso se guardará automáticamente.</p>
+    </header>
+
+    <div class="malla-container" id="malla-curricular">
+
+        <div class="semestre">
+            <h2>1º Semestre</h2>
+            <div class="ramo" id="psico-desarrollo">Psicología Aprendizaje Desarrollo</div>
+            <div class="ramo" id="ap-des-1">Aprendizaje y Desarrollo 1</div>
+            <div class="ramo" id="politicas-edu">Políticas Educativas y Educación Especial</div>
+            <div class="ramo" id="fundamentos-disc">Fundamentos Disciplinares de la Educación Especial</div>
+            <div class="ramo" id="investigacion-accion">Investigación, Acción en el contexto escolar</div>
+            <div class="ramo" id="ingles-1">Inglés 1</div>
+        </div>
+
+        <div class="semestre">
+            <h2>2º Semestre</h2>
+            <div class="ramo" id="practica-1" data-prerrequisitos='["psico-desarrollo", "ap-des-1"]'>Práctica 1</div>
+            <div class="ramo" id="ap-des-2" data-prerrequisitos='["ap-des-1"]'>Aprendizaje y Desarrollo 2: Psicomotricidad</div>
+            <div class="ramo" id="func-teoricos" data-prerrequisitos='["fundamentos-disc"]'>Funcionamientos Teóricos para la L/escritura</div>
+            <div class="ramo" id="mat-1">Matemáticas 1: Números y su Didáctica</div>
+            <div class="ramo" id="curriculum-eval" data-prerrequisitos='["investigacion-accion"]'>Currículum y Evaluación en sistema escolar</div>
+            <div class="ramo" id="ingles-2" data-prerrequisitos='["ingles-1"]'>Inglés 2</div>
+        </div>
+
+        <div class="semestre">
+            <h2>3º Semestre</h2>
+            <div class="ramo" id="practica-2" data-prerrequisitos='["practica-1"]'>Práctica 2</div>
+            <div class="ramo" id="ap-des-3" data-prerrequisitos='["ap-des-2"]'>Aprendizaje y Desarrollo 3: Desarrollo artístico</div>
+            <div class="ramo" id="adq-lengua" data-prerrequisitos='["func-teoricos"]'>Adquisición de la lengua oral y escrita</div>
+            <div class="ramo" id="mat-2" data-prerrequisitos='["mat-1"]'>Matemáticas 2: Geometría 1 y su Didáctica</div>
+            <div class="ramo" id="didactica-comprension" data-prerrequisitos='["curriculum-eval"]'>Didáctica para la comprensión del Medio Natural y Social</div>
+            <div class="ramo" id="ingles-3" data-prerrequisitos='["ingles-2"]'>Inglés 3</div>
+        </div>
+
+        <div class="semestre">
+            <h2>4º Semestre</h2>
+            <div class="ramo" id="practica-3" data-prerrequisitos='["practica-2"]'>Práctica 3</div>
+            <div class="ramo" id="ap-des-4" data-prerrequisitos='["ap-des-3"]'>Aprendizaje y Desarrollo 4: Autonomía y autodeterminación</div>
+            <div class="ramo" id="lectura-didactica" data-prerrequisitos='["adq-lengua"]'>Lectura y su Didáctica</div>
+            <div class="ramo" id="mat-3" data-prerrequisitos='["mat-2"]'>Matemáticas 3: Álgebra y su Didáctica</div>
+            <div class="ramo" id="edu-inclusiva" data-prerrequisitos='["didactica-comprension"]'>Educación inclusiva: Tensiones entre la igualdad y la diferencia</div>
+            <div class="ramo" id="formacion-general-1">Formación General</div>
+        </div>
+        
+        </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
